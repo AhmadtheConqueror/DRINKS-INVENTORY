@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Belloson Drinks Inventory</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <div class="container">
+    <h1>Belloson Drinks Inventory</h1>
+
+    <div class="nav-tabs">
+    <a href="{{ url_for('inventory') }}" class="nav-tab {% if request.path == '/inventory' %}active{% endif %}">Inventory</a>
+    <a href="{{ url_for('expenses') }}" class="nav-tab {% if request.path == '/expenses' %}active{% endif %}">Expenses</a>
+    <a href="{{ url_for('debts') }}" class="nav-tab {% if request.path == '/debts' %}active{% endif %}">Debts</a>
+    <a href="{{ url_for('reports') }}" class="nav-tab {% if request.path == '/reports' %}active{% endif %}">Reports</a>
+</div>
+
+
+    <div class="card">
+      <h2>Add New Product</h2>
+     <form class="form-row" method="POST">
+  <input type="text" name="name" placeholder="Product name" required />
+  <input type="number" name="quantity" placeholder="Quantity" required />
+  <input type="text" name="selling_price" placeholder="Selling price" required />
+  <input type="text" name="cost_price" placeholder="Cost price" required />
+  <button type="submit">Add Product</button>
+</form>
+    </div>
+
+    <div class="card">
+      <h2>Current Inventory</h2>
+      <div class="table-responsive">
+        <table>
+          <thead>
+            <tr>
+              <th>Product</th>
+              <th>Quantity</th>
+              <th>Selling Price</th>
+              <th>Cost Price</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+  {% for product in products %}
+  <tr>
+    <td>{{ product.name }}</td>
+    <td><span class="badge green">{{ product.quantity }}</span></td>
+    <td>₦{{ '%.2f' | format(product.selling_price) }}</td>
+    <td>₦{{ '%.2f' | format(product.cost_price) }}</td>
+    <td>
+     <form method="POST" action="{{ url_for('adjust_quantity', product_id=product.id) }}" style="display: flex; gap: 8px;">
+    <input type="number" name="delta" placeholder="+/- Qty" required style="width: 80px; padding: 4px;">
+    <button type="submit" style="padding: 4px 10px; background-color: #3498db; color: white; border: none; border-radius: 4px;">Update</button>
+</form>
+
+      <a href="{{ url_for('edit_product', product_id=product.id) }}" class="action-link">Edit</a> |
+  <a href="{{ url_for('delete_product', product_id=product.id) }}" class="action-link text-danger">Delete</a>
+    </td>
+  </tr>
+  {% endfor %}
+</tbody>
+
+
+
+        </table>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

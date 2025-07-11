@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Expenses | Belloson Drinks Inventory</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <div class="container">
+    <h1>Belloson Drinks Inventory</h1>
+
+    <div class="nav-tabs">
+    <a href="{{ url_for('inventory') }}" class="nav-tab {% if request.path == '/inventory' %}active{% endif %}">Inventory</a>
+    <a href="{{ url_for('expenses') }}" class="nav-tab {% if request.path == '/expenses' %}active{% endif %}">Expenses</a>
+    <a href="{{ url_for('debts') }}" class="nav-tab {% if request.path == '/debts' %}active{% endif %}">Debts</a>
+    <a href="{{ url_for('reports') }}" class="nav-tab {% if request.path == '/reports' %}active{% endif %}">Reports</a>
+</div>
+
+
+    <div class="card">
+      <h2>Add New Expense</h2>
+      <form class="form-row" method="POST">
+  <input type="text" name="description" placeholder="Description" required />
+  <input type="number" step="0.01" name="amount" placeholder="Amount" required />
+  <select name="category">
+    <option value="Fixed">Fixed</option>
+    <option value="Variable">Variable</option>
+    <option value="Utilities">Utilities</option>
+    <option value="Other">Other</option>
+  </select>
+  <button type="submit">Add Expense</button>
+</form>
+
+    </div>
+
+    <div class="card">
+      <h2>Expenses</h2>
+      <div class="table-responsive">
+        <table>
+          <thead>
+            <tr>
+              <th>Description</th>
+              <th>Amount</th>
+              <th>Category</th>
+              <th>Date</th>
+              <th>Actions</th>
+
+            </tr>
+          </thead>
+        <tbody>
+  {% for expense in expenses %}
+  <tr>
+    <td>{{ expense.description }}</td>
+    <td>₦{{ '%.2f'|format(expense.amount) }}</td>
+    <td><span class="badge blue">{{ expense.category }}</span></td>
+    <td>{{ expense.date.strftime('%Y-%m-%d') }}</td>
+    <td>
+  <a href="{{ url_for('edit_expense', expense_id=expense.id) }}" class="action-link">Edit</a> |
+  <a href="{{ url_for('delete_expense', expense_id=expense.id) }}" class="action-link text-danger">Delete</a>
+</td>
+
+  </tr>
+  {% endfor %}
+</tbody>
+
+        </table>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Reports |Belloson Drinks Inventory</title>
+  <link rel="stylesheet" href="/static/style.css" />
+</head>
+<body>
+  <div class="container">
+    <h1>Belloson Drinks Inventory</h1>
+<a href="{{ url_for('export_sales') }}" class="export-button">📥 Export Sales Report</a>
+
+    <div class="nav-tabs">
+    <a href="{{ url_for('inventory') }}" class="nav-tab {% if request.path == '/inventory' %}active{% endif %}">Inventory</a>
+    <a href="{{ url_for('expenses') }}" class="nav-tab {% if request.path == '/expenses' %}active{% endif %}">Expenses</a>
+    <a href="{{ url_for('debts') }}" class="nav-tab {% if request.path == '/debts' %}active{% endif %}">Debts</a>
+    <a href="{{ url_for('reports') }}" class="nav-tab {% if request.path == '/reports' %}active{% endif %}">Reports</a>
+</div>
+
+    <div class="card">
+      <h2>Business Summary</h2>
+    <div class="summary-row">
+  <div class="summary-item">
+    <h3>Revenue</h3>
+    <p>₦{{ '%.2f'|format(total_revenue) }}</p>
+  </div>
+  <div class="summary-item">
+    <h3>Total Expenses</h3>
+    <p>₦{{ '%.2f'|format(total_expenses) }}</p>
+  </div>
+</div>
+
+<div class="summary-row">
+  <div class="summary-item">
+    <h3>Profit/Loss</h3>
+    <p class="text-danger">₦{{ '%.2f'|format(profit) }}</p>
+  </div>
+  <div class="summary-item">
+  <h3>Pending Debts</h3>
+  <p>₦{{ '%.2f'|format(pending_debt) }}</p>
+</div>
+
+</div>
+
+<!-- Monthly Summary -->
+<p class="text-muted">Current month: July 2025</p>
+<div class="summary-row">
+  <div class="summary-item">
+    <h3>Revenue</h3>
+    <p>₦{{ '%.2f'|format(total_revenue) }}</p>
+  </div>
+  <div class="summary-item">
+    <h3>Expenses</h3>
+    <p>₦{{ '%.2f'|format(total_expenses) }}</p>
+  </div>
+  <div class="summary-item">
+    <h3>Net Profit</h3>
+    <p class="text-danger">₦{{ '%.2f'|format(net_profit) }}</p>
+  </div>
+</div>
+
+    </div>
+  </div>
+</body>
+</html>
